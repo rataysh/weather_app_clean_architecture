@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:weather_app/core/theme/components/app_primary_button.dart';
 import 'package:weather_app/presentation/home/home_page_provider.dart';
 import 'package:weather_app/presentation/widgets/weather_card.dart';
 import 'package:weather_app/core/utils/city_input_validation.dart';
+import 'package:weather_app/core/theme/dimens.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -30,7 +32,10 @@ class HomePage extends ConsumerWidget {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.symmetric(
+          horizontal: Dimens.of(context).paddingScreenHorizontal,
+          vertical: Dimens.of(context).paddingScreenVertical,
+        ),
         child: Form(
           key: formKey,
           child: Column(
@@ -43,13 +48,13 @@ class HomePage extends ConsumerWidget {
                 validator: validateCityInput,
               ),
               const SizedBox(height: 16),
-              ElevatedButton(
+              AppPrimaryButton(
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
                     homeViewModel.fetchWeather(textController.text.trim());
                   }
                 },
-                child: const Text('Get Weather'),
+                text: 'Get Weather',
               ),
               const SizedBox(height: 16),
               // Loading indicator

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:weather_app/presentation/history/history_provider.dart';
 import 'package:weather_app/presentation/widgets/history_card.dart';
+import 'package:weather_app/core/theme/dimens.dart';
 
 class HistoryPage extends ConsumerStatefulWidget {
   const HistoryPage({super.key});
@@ -25,7 +27,14 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false, 
         title: const Text('Search History'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            context.pop();
+          },
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.delete),
@@ -35,7 +44,12 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
           ),
         ],
       ),
-      body: historyState.isLoading
+      body: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: Dimens.of(context).paddingScreenHorizontal,
+          vertical: Dimens.of(context).paddingScreenVertical,
+        ),
+        child: historyState.isLoading
           ? const Center(child: CircularProgressIndicator())
           : historyState.errorMessage != null
               ? Center(
@@ -73,6 +87,7 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                         ),
                       ],
                     ),
+      ),
     );
   }
 }

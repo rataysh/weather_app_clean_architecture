@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/domain/entities/weather_entity.dart';
+import 'package:weather_app/core/theme/theme.dart';
 
 class WeatherCard extends StatelessWidget {
   final WeatherEntity weather;
@@ -17,6 +18,7 @@ class WeatherCard extends StatelessWidget {
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(16.0),
+        decoration: AppTheme.cardDecoration,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
