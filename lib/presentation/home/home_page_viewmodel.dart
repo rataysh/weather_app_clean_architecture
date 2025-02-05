@@ -9,22 +9,26 @@ class HomePageState {
   final bool isLoading;
   final WeatherEntity? weather;
   final String? errorMessage;
+  final bool isCardExpanded;
 
   HomePageState({
     this.isLoading = false,
     this.weather,
     this.errorMessage,
+    this.isCardExpanded = false,
   });
 
   HomePageState copyWith({
     bool? isLoading,
     WeatherEntity? weather,
     String? errorMessage,
+    bool? isCardExpanded,
   }) {
     return HomePageState(
       isLoading: isLoading ?? this.isLoading,
       weather: weather ?? this.weather,
       errorMessage: errorMessage,
+      isCardExpanded: isCardExpanded ?? this.isCardExpanded,
     );
   }
 }
@@ -74,5 +78,10 @@ class HomePageViewModel extends StateNotifier<HomePageState> {
         errorMessage: e.toString(),
       );
     }
+  }
+
+  // Method to toggle card expansion state
+  void toggleCardExpansion() {
+    state = state.copyWith(isCardExpanded: !state.isCardExpanded);
   }
 }

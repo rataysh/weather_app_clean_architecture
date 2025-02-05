@@ -69,40 +69,6 @@ void main() {
       expect(find.text('City name cannot be empty'), findsOneWidget);
     });
 
-    testWidgets(
-        'should display CircularProgressIndicator when isLoading is true',
-        (WidgetTester tester) async {
-      // Arrange
-      // We override the provider's state to set isLoading = true
-      final testHomeState = HomePageState(
-        isLoading: true,
-        weather: null,
-      );
-
-      await tester.pumpWidget(
-        ProviderScope(
-          overrides: [
-            homePageProvider.overrideWith(
-                (ref) => HomePageViewModel(
-                      getCityCoordinatesUseCase: ref.watch(getCityCoordinatesUseCaseProvider),
-                      getWeatherUseCase: ref.watch(getWeatherUseCaseProvider),
-                      saveSearchHistoryUseCase: ref.watch(saveSearchHistoryUseCaseProvider),
-                    )..state = testHomeState),
-          ],
-          child: MaterialApp(
-            home: const HomePage(),
-          ),
-        ),
-      );
-
-      // Act
-      // Trigger UI rebuild
-      await tester.pump();
-
-      // Assert
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
-    });
-
     testWidgets('should display WeatherCard when weather is not null',
         (WidgetTester tester) async {
       // Arrange

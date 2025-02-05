@@ -4,20 +4,38 @@ import 'package:go_router/go_router.dart';
 import 'package:weather_app/core/theme/components/app_primary_button.dart';
 import 'package:weather_app/core/theme/components/shimers/weather_card_shimer.dart';
 import 'package:weather_app/presentation/home/home_page_provider.dart';
+import 'package:weather_app/presentation/widgets/detailed_weather_card.dart';
 import 'package:weather_app/presentation/widgets/weather_card.dart';
 import 'package:weather_app/core/utils/city_input_validation.dart';
 import 'package:weather_app/core/theme/dimens.dart';
 
-class HomePage extends ConsumerWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends ConsumerState<HomePage> {
+  late TextEditingController textController;
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    textController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    textController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final homeState = ref.watch(homePageProvider);
     final homeViewModel = ref.read(homePageProvider.notifier);
-
-    final textController = TextEditingController();
-    final formKey = GlobalKey<FormState>();
 
     return Scaffold(
       appBar: AppBar(
@@ -41,6 +59,7 @@ class HomePage extends ConsumerWidget {
           key: formKey,
           child: Column(
             children: [
+              const SizedBox(height: 42),
               TextFormField(
                 controller: textController,
                 decoration: const InputDecoration(
@@ -48,22 +67,47 @@ class HomePage extends ConsumerWidget {
                 ),
                 validator: validateCityInput,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
               AppPrimaryButton(
                 onPressed: () async {
                   if (formKey.currentState!.validate()) {
+                    homeState.isCardExpanded
+                        ? homeViewModel.toggleCardExpansion()
+                        : null;
                     homeViewModel.fetchWeather(textController.text.trim());
+                    textController.clear();
                   }
                 },
                 text: 'Get Weather',
               ),
               const SizedBox(height: 16),
-              // Loading indicator
-              // if (homeState.isLoading) const CircularProgressIndicator(),
               if (homeState.isLoading) WeatherCardShimmer(),
-              // Weather data
               if (homeState.weather != null && homeState.isLoading == false)
-                WeatherCard(weather: homeState.weather!),
+                GestureDetector(
+                  onTap: () {
+                    homeViewModel.toggleCardExpansion();
+                  },
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 500),
+                    switchInCurve: Curves.easeOut,
+                    switchOutCurve: Curves.easeIn,
+                    transitionBuilder: (child, animation) {
+                      return ScaleTransition(
+                        scale: animation,
+                        child: child,
+                      );
+                    },
+                    child: homeState.isCardExpanded
+                        ? DetailedWeatherCard(
+                            key: const ValueKey('detailed'),
+                            weather: homeState.weather!,
+                          )
+                        : WeatherCard(
+                            key: const ValueKey('compact'),
+                            weather: homeState.weather!,
+                          ),
+                  ),
+                ),
             ],
           ),
         ),
