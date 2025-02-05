@@ -50,6 +50,9 @@ class HomePageViewModel extends StateNotifier<HomePageState> {
       final city = await getCityCoordinatesUseCase(cityName);
       final weather = await getWeatherUseCase(city.lat, city.lon);
 
+      // Test delay to shimmer effect showing
+      await Future.delayed(Duration(seconds: 3));
+
       state = state.copyWith(
           isLoading: false, weather: weather, errorMessage: null);
 

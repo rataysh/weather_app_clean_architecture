@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:weather_app/core/theme/components/app_primary_button.dart';
+import 'package:weather_app/core/theme/components/shimers/weather_card_shimer.dart';
 import 'package:weather_app/presentation/home/home_page_provider.dart';
 import 'package:weather_app/presentation/widgets/weather_card.dart';
 import 'package:weather_app/core/utils/city_input_validation.dart';
@@ -49,7 +50,7 @@ class HomePage extends ConsumerWidget {
               ),
               const SizedBox(height: 16),
               AppPrimaryButton(
-                onPressed: () {
+                onPressed: () async {
                   if (formKey.currentState!.validate()) {
                     homeViewModel.fetchWeather(textController.text.trim());
                   }
@@ -58,9 +59,10 @@ class HomePage extends ConsumerWidget {
               ),
               const SizedBox(height: 16),
               // Loading indicator
-              if (homeState.isLoading) const CircularProgressIndicator(),
+              // if (homeState.isLoading) const CircularProgressIndicator(),
+              if (homeState.isLoading) WeatherCardShimmer(),
               // Weather data
-              if (homeState.weather != null)
+              if (homeState.weather != null && homeState.isLoading == false)
                 WeatherCard(weather: homeState.weather!),
             ],
           ),
