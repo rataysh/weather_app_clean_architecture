@@ -8,6 +8,7 @@ final homePageProvider =
     getCityCoordinatesUseCase: ref.watch(getCityCoordinatesUseCaseProvider),
     getWeatherUseCase: ref.watch(getWeatherUseCaseProvider),
     saveSearchHistoryUseCase: ref.watch(saveSearchHistoryUseCaseProvider),
+    getForecastUseCase: ref.watch(getForecastUseCaseProvider),
   );
 });
 

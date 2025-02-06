@@ -33,4 +33,21 @@ class WeatherApiService extends ApiService {
     final rawData = await getRequest(url, queryParameters: queryParameters);
     return rawData;
   }
+
+  /// Fetch forecast weather data for 5 day by 3 hours delimetr
+  ///
+  Future<dynamic> fetchForecastData({
+    required double lat,
+    required double lon,
+  }) async {
+    const String url = 'https://api.openweathermap.org/data/2.5/forecast';
+    final queryParameters = {
+      'lat': lat,
+      'lon': lon,
+      'appid': AppConfig.openWeatherMapApiKey,
+      'units': 'metric',
+    };
+    final rawData = await getRequest(url, queryParameters: queryParameters);
+    return rawData;
+  }
 }

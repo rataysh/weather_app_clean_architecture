@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/domain/entities/forecast_entity.dart';
 import 'package:weather_app/domain/entities/weather_entity.dart';
 import 'package:weather_app/core/theme/theme.dart';
+import 'package:weather_app/presentation/widgets/forecast_chart_widget.dart';
 
 class DetailedWeatherCard extends StatelessWidget {
   final WeatherEntity weather;
+  final ForecastEntity? forecast;
 
   const DetailedWeatherCard({
     super.key,
     required this.weather,
+    this.forecast,
   });
 
   @override
@@ -32,9 +36,15 @@ class DetailedWeatherCard extends StatelessWidget {
               'Temperature: ${weather.temperature.toStringAsFixed(1)} °C',
               style: const TextStyle(fontSize: 16),
             ),
+            if (forecast?.cityName != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                child:
+                    ForecastChartWidget(forecastList: forecast!.forecastList),
+              ),
             const SizedBox(height: 8),
             Text(
-              'Feels Like: ${weather.temperature + 1} °C',
+              'Feels Like: ${(weather.temperature + 1).toStringAsFixed(1)} °C',
               style: const TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 8),

@@ -101,6 +101,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                         ? DetailedWeatherCard(
                             key: const ValueKey('detailed'),
                             weather: homeState.weather!,
+                            forecast: homeState.forecast,
                           )
                         : WeatherCard(
                             key: const ValueKey('compact'),

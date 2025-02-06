@@ -1,4 +1,5 @@
 import 'package:weather_app/domain/entities/city_entity.dart';
+import 'package:weather_app/domain/entities/forecast_entity.dart';
 import 'package:weather_app/domain/entities/weather_entity.dart';
 
 abstract class WeatherRepositoryInterface {
@@ -10,4 +11,7 @@ abstract class WeatherRepositoryInterface {
 
   // Get city coordinates using the city name
   Future<CityEntity> getCityCoordinates(String cityName);
+
+  // 5-day forecast
+  Future<ForecastEntity> getForecast(double lat, double lon);
 }

@@ -8,6 +8,7 @@ import 'package:weather_app/domain/repositories/search_history_interface.dart';
 import 'package:weather_app/domain/repositories/weather_repository_interface.dart';
 import 'package:weather_app/domain/usecases/clear_search_history_usecase.dart';
 import 'package:weather_app/domain/usecases/get_city_coordinates_usecase.dart';
+import 'package:weather_app/domain/usecases/get_forecast_usecase.dart';
 import 'package:weather_app/domain/usecases/get_weather_usecase.dart';
 import 'package:weather_app/domain/usecases/save_search_history_usecase.dart';
 import 'package:weather_app/domain/usecases/get_search_history_usecase.dart';
@@ -70,4 +71,8 @@ final clearSearchHistoryUseCaseProvider =
     Provider<ClearSearchHistoryUseCase>((ref) {
   final searchHistoryRepo = ref.watch(searchHistoryRepositoryProvider);
   return ClearSearchHistoryUseCase(searchHistoryRepo);
+});
+
+final getForecastUseCaseProvider = Provider<GetForecastUseCase>((ref) {
+  return GetForecastUseCase(ref.watch(weatherRepositoryProvider));
 });
