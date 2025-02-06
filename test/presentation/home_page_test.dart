@@ -83,12 +83,14 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            homePageProvider.overrideWith(
-                (ref) => HomePageViewModel(
-                      getCityCoordinatesUseCase: ref.watch(getCityCoordinatesUseCaseProvider),
-                      getWeatherUseCase: ref.watch(getWeatherUseCaseProvider),
-                      saveSearchHistoryUseCase: ref.watch(saveSearchHistoryUseCaseProvider),
-                    )..state = testHomeState),
+            homePageProvider.overrideWith((ref) => HomePageViewModel(
+                  getCityCoordinatesUseCase:
+                      ref.watch(getCityCoordinatesUseCaseProvider),
+                  getWeatherUseCase: ref.watch(getWeatherUseCaseProvider),
+                  saveSearchHistoryUseCase:
+                      ref.watch(saveSearchHistoryUseCaseProvider),
+                  getForecastUseCase: ref.watch(getForecastUseCaseProvider),
+                )..state = testHomeState),
           ],
           child: MaterialApp(
             home: const HomePage(),
@@ -135,7 +137,7 @@ void main() {
 
       // Act
       await tester.tap(find.byIcon(Icons.history));
-      await tester.pumpAndSettle(); 
+      await tester.pumpAndSettle();
       // Assert
       expect(find.text('History Page'), findsOneWidget);
     });

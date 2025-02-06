@@ -84,31 +84,44 @@ class _HomePageState extends ConsumerState<HomePage> {
               if (homeState.isLoading) WeatherCardShimmer(),
               if (homeState.weather != null && homeState.isLoading == false)
                 GestureDetector(
-                  onTap: () {
-                    homeViewModel.toggleCardExpansion();
-                  },
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 500),
-                    switchInCurve: Curves.easeOut,
-                    switchOutCurve: Curves.easeIn,
-                    transitionBuilder: (child, animation) {
-                      return ScaleTransition(
-                        scale: animation,
-                        child: child,
-                      );
+                    onTap: () {
+                      homeViewModel.toggleCardExpansion();
                     },
-                    child: homeState.isCardExpanded
-                        ? DetailedWeatherCard(
-                            key: const ValueKey('detailed'),
-                            weather: homeState.weather!,
-                            forecast: homeState.forecast,
-                          )
-                        : WeatherCard(
-                            key: const ValueKey('compact'),
-                            weather: homeState.weather!,
-                          ),
-                  ),
-                ),
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 500),
+                      switchInCurve: Curves.easeOut,
+                      switchOutCurve: Curves.easeIn,
+                      // Custom layout builder
+                      layoutBuilder: (Widget? currentChild,
+                          List<Widget> previousChildren) {
+                        return Stack(
+                          // Align them at the topCenter so they don't jump
+                          alignment: Alignment.topCenter,
+                          children: <Widget>[
+                            ...previousChildren,
+                            if (currentChild != null) currentChild,
+                          ],
+                        );
+                      },
+                      transitionBuilder: (child, animation) {
+                        return ScaleTransition(
+                          // Align the scaling animation to the top
+                          alignment: Alignment.topCenter,
+                          scale: animation,
+                          child: child,
+                        );
+                      },
+                      child: homeState.isCardExpanded
+                          ? DetailedWeatherCard(
+                              key: const ValueKey('detailed'),
+                              weather: homeState.weather!,
+                              forecast: homeState.forecast,
+                            )
+                          : WeatherCard(
+                              key: const ValueKey('compact'),
+                              weather: homeState.weather!,
+                            ),
+                    )),
             ],
           ),
         ),
