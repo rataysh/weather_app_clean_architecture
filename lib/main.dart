@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       title: 'Weather App',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.light,
       routerConfig: router,
     );
   }
